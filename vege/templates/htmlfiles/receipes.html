@@ -1,0 +1,95 @@
+{% extends "basic.html" %}
+
+{% block start %}
+<div class="container mt-5">
+    <form class="col-8 mx-auto card p-4 shadow" method="post" enctype="multipart/form-data" id="receipeForm">
+        {% csrf_token %}
+        <h2 class="mb-4 text-center">Add Receipe</h2>
+        <hr>
+
+
+        <div class="mb-3">
+            <label for="receipeName" class="form-label">Receipe Name</label>
+            <input name="receipe_name" required type="text" class="form-control" id="receipeName" placeholder="Enter receipe name">
+        </div>
+        <div class="mb-3">
+            <label for="receipeDescription"  class="form-label">Receipe Description</label>
+            <textarea class="form-control" required name="receipe_description" id="receipeDescription" placeholder="Enter receipe description"></textarea>
+        </div>
+        <div class="mb-3">
+            <label for="receipeImage" class="form-label">Receipe Image</label>
+            <input name="receipe_image" required type="file" class="form-control" id="receipeImage">
+            <small class="form-text text-muted">Select an image for the receipe</small>
+        </div>
+        <div class="text-center">
+            <button type="submit" class="btn btn-success">Add Receipe</button>
+        </div>
+    </form>
+    <hr>
+
+    <div class="mt-5">
+        <div class="mx-auto col-6">
+            <form>
+                <div class="mb-3">
+            <label for="receipeName" class="form-label">Search Food</label>
+            <input name="search"  type="text" class="form-control" id="receipeName" placeholder="Enter receipe name">
+        </div>
+            <button type="submit"class="btn btn-primary">Search</button>
+                            </form>
+
+        </div>
+    </div>
+
+
+
+    <!-- Table to display receipes -->
+    <div class="mt-5">
+        <h2 class="mb-4 text-center">Receipe List</h2>
+        <table class="table table-striped table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">No</th>
+                    <th scope="col">Receipe Name</th>
+                    <th scope="col">Receipe Description</th>
+                    <th scope="col">Image</th>
+                    <th scope="col">Actions</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                {% for receipe in receipes %}
+                <tr>
+                    <th scope="row">{{ forloop.counter }}</th>
+                    <td>{{ receipe.receipe_name }}</td>
+                    <td>{{ receipe.receipe_description }}</td>
+                    <td>
+                        <img src="/media/{{ receipe.receipe_image }}" alt="{{ receipe.receipe_name }}" style="heigh : 200px; width: 100px;" class="img-fluid"></td>
+                        <td>
+                            <a href="/delete-receipe/{{receipe.id}}/ " class="btn btn-danger m-2">Delete</a>
+
+                            <a href="/update-receipe/{{receipe.id}}/ " class="btn btn-success">update</a>
+
+                        </td>
+
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+<script>
+    document.getElementById('receipeForm').addEventListener('submit', function(event) {
+        // Example of form validation
+        var receipeName = document.getElementById('receipeName').value;
+        var receipeDescription = document.getElementById('receipeDescription').value;
+
+        if (receipeName.trim() === '' || receipeDescription.trim() === '') {
+            alert('Please fill in all fields');
+            event.preventDefault(); // Prevent form submission if validation fails
+        }
+    });
+</script>
+
+{% endblock %}

@@ -1,0 +1,72 @@
+{% extends "basic.html" %}
+
+{% block start %}
+<div class="container mt-5">
+    <form class="col-md-8 mx-auto card p-4 shadow" method="post" enctype="multipart/form-data" id="recipeForm">
+        {% csrf_token %}
+        <h2 class="mb-4 text-center">Register</h2>
+        <hr>
+
+        {% if messages %}
+    <div class="alert alert-primary" role="alert">
+        {% for message in messages %}
+            {{ message }}
+        {% endfor %}
+    </div>
+    <div class="messages">
+        {% for message in messages %}
+            <div {% if message.tags %}class="{{ message.tags }}"{% endif %}>
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
+
+        <div class="mb-3">
+            <label for="firstName" class="form-label">First Name</label>
+            <input type="text" class="form-control" name="first_name" id="firstName" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="lastName" class="form-label">Last Name</label>
+            <input type="text" class="form-control" name="last_name" id="lastName" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="username" class="form-label">Username</label>
+            <input type="text" class="form-control" name="username" id="username" required>
+            <div id="usernameHelp" class="form-text">We'll never share your username with anyone</div>
+        </div>
+
+        <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" class="form-control" name="password" id="password" required>
+        </div>
+
+        <p><a href="/login/">Already have an account? Log in here.</a></p>
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+
+<style>
+    /* Add your custom CSS styles here */
+    .container {
+        max-width: 1000px;
+    }
+</style>
+
+<script>
+    document.getElementById('recipeForm').addEventListener('submit', function(event) {
+        // Form validation
+        var firstName = document.getElementById('firstName').value;
+        var lastName = document.getElementById('lastName').value;
+        var username = document.getElementById('username').value;
+        var password = document.getElementById('password').value;
+
+        if (firstName.trim() === '' || lastName.trim() === '' || username.trim() === '' || password.trim() === '') {
+            alert('Please fill in all fields');
+            event.preventDefault(); // Prevent form submission if validation fails
+        }
+    });
+</script>
+{% endblock %}
